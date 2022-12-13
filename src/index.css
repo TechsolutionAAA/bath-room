@@ -1,0 +1,836 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.newPlanBtn{
+  background-color: white;
+}
+
+.newPlanBtn:hover{
+  background-color: #ebb3fc;
+}
+
+
+#loading_spinner {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.cv_spinner {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.span_spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px #ddd solid;
+  border-top: 4px #2e93e6 solid;
+  border-radius: 50%;
+  animation: sp-anime 0.8s infinite linear;
+}
+
+.logo>img:first-child {
+  margin-right: 15px;
+}
+
+.tab {
+  cursor: pointer;
+}
+
+.tab:hover,
+.tab.active {
+  background-color: aqua;
+}
+
+.content {
+  position: fixed;
+  left: 50px;
+  top: 60px;
+  background: rgb(190, 190, 190);
+  height: 100vh;
+  margin: 0px;
+  width: 100%;
+}
+
+.roomsSideBar {
+  position: fixed;
+  height: 100%;
+  width: 450px;
+  top: 60px;
+  left: 50px;
+  background: rgb(250, 247, 247);
+  transition: 0.3s;
+  z-index: 100;
+  box-sizing: border-box;
+  padding-right: 0;
+}
+
+.views {
+  right: 100px;
+}
+
+.measure-value {
+  position: absolute;
+  transform: translate(-50%, -50%) translate(253.9px, 352.5px);
+  z-index: 4;
+}
+
+.sizeInput {
+  width: 50px;
+  height: 20px;
+  border: none;
+}
+
+.rightSideBar {
+  position: absolute;
+  width: 50px;
+  top: 100px;
+  align-items: flex-end;
+  z-index: 200;
+}
+
+.control-btn {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  padding: 15px;
+
+  background-color: #aaaaaa;
+
+  margin-left: 20px;
+
+  border: none;
+  border-radius: 15px;
+}
+
+.righttopSideBar {
+  position: absolute;
+  width: 500px;
+  top: 40px;
+  
+  display: flex;
+  flex-direction: row;
+  
+  z-index: 100;
+}
+
+@media screen and (max-width: 678px) {
+  .righttopSideBar {
+    display: none;
+  }
+}
+
+.panel {
+  position: absolute;
+  width: 500px;
+  top: 105px;
+  z-index: 100;
+}
+
+.panel-ground {
+  width: 310px;
+  height: 200px;
+  border-radius: 15px;
+  background-color: #aaaaaa;
+  position: relative;
+}
+
+.search {
+  width: 350px !important;
+  margin-left: auto;
+  margin-right: auto;
+  outline: none;
+  border-radius: 20px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .roomsSideBar {
+    width: 300px !important;
+  }
+
+  .search {
+    width: 270px !important;
+  }
+
+  .justify {
+    justify-content: center;
+  }
+}
+
+.height_vh {
+  overflow-y: scroll;
+  max-height: calc(100vh - 200px);
+}
+
+.mb-3 {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  background: #333;
+}
+
+input[type="search"] {
+  padding: 20px;
+  font-size: 15px;
+  height: 5px;
+  line-height: normal;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 15px;
+}
+
+.cards1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card1 {
+  width: 47%;
+  cursor: pointer;
+}
+
+.card1>img {
+  height: 100%;
+  width: 100%;
+}
+
+.bathroom {
+  display: none;
+}
+
+.cursor {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 15px;
+  padding: 5px 10px;
+}
+
+.b_title {
+  margin-bottom: 0 !important;
+  padding-left: 0px;
+  margin-left: 0 !important;
+  cursor: pointer;
+}
+
+.b_title>span,
+.b_title>p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0 !important;
+}
+
+.r_title {
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.r_title>span {
+  cursor: pointer;
+}
+
+.r_title>h6 {
+  margin-bottom: 0 !important;
+}
+
+h6:hover {
+  background-color: transparent !important;
+}
+
+.canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas>.functionBoard {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  background-color: white;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  display: none;
+}
+
+.functionBoard:hover {
+  cursor: pointer;
+}
+
+.functionBoard>i {
+  font-size: 25px;
+  color: #333;
+  margin-left: 10px;
+  margin-top: 7px;
+}
+
+.rounded-5 {
+  margin: 0 !important;
+}
+
+.main_window {
+  margin-top: 15px;
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
+}
+
+.padding {
+  padding: 2px !important;
+  width: 80%;
+  height: 80%;
+  border-radius: 50% !important;
+  background-image: linear-gradient(#aaa, #fff);
+}
+
+.marr {
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.radius {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#aaa, #fff);
+}
+
+.radius1 {
+  padding: 2px !important;
+  border-radius: 50% !important;
+  background-image: linear-gradient(#aaa, #fff);
+}
+
+.shadow {
+  padding: 3px !important;
+  margin: 2px !important;
+}
+
+.create {
+  width: 100%;
+  margin-top: 5%;
+  cursor: pointer;
+}
+
+.create>p {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #aaa;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.calc {
+  overflow-y: scroll;
+  max-height: calc(100vh - 240px);
+}
+
+@media screen and (max-width: 768px) {
+  .calc {
+    justify-content: center;
+  }
+
+  .marr {
+    width: 70%;
+  }
+}
+
+.shadow-sm {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.modal {
+  position: absolute;
+  z-index: 20000;
+  padding-top: 3%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0, 0.4);
+}
+
+.create_window {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  max-width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.main_window1 {
+  flex-direction: column;
+  display: flex;
+  width: 80%;
+  text-align: center !important;
+}
+
+.close,
+.close1 {
+  color: #aaa;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close1 {
+  text-align: right;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.close1:hover,
+.close1:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.uploadimage {
+  width: 200px;
+  height: auto;
+}
+
+.image_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #aaa;
+  gap: 30px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
+.image_info>label {
+  font-size: 14px !important;
+  font-weight: 500;
+}
+
+.image_info>label>input {
+  width: 300px !important;
+}
+
+.rounded {
+  position: relative;
+}
+
+.hover1 {
+  position: absolute;
+  top: 22%;
+  width: 40px;
+  height: 40px;
+  padding:5px;
+  background-color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  opacity: 0;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.rounded:hover .hover1 {
+  transition: all 1 ease-in-out;
+  opacity: 1;
+}
+
+.hover1:hover {
+  background-color: #333;
+}
+
+.hover1 > p {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+.top {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  display: flex;
+  justify-content: center;
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+  display: flex;
+  justify-content: center;
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.left {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 160px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.right {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 160px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cbottom {
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+  display: flex;
+  justify-content: center;
+  width: 160px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cright {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cbottom1 {
+  position: absolute;
+  bottom: 90px;
+  left: 200px;
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cright1 {
+  position: absolute;
+  top: 100px;
+  right: 110px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+
+.cbottom2 {
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  width: 160px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cleft {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cbottom3 {
+  position: absolute;
+  bottom: 90px;
+  right: 200px;
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cleft1 {
+  position: absolute;
+  top: 100px;
+  left: 110px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.ctop {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  display: flex;
+  justify-content: center;
+  width: 160px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cright2 {
+  position: absolute;
+  top: 20px;
+  right: 110px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.ctop1 {
+  position: absolute;
+  top: 90px;
+  left: 200px;
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cright3 {
+  position: absolute;
+  top: 100px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+
+.ctop2 {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  width: 160px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cleft2 {
+  position: absolute;
+  top: 20px;
+  left: 110px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.ctop3 {
+  position: absolute;
+  top: 90px;
+  right: 200px;
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cleft3 {
+  position: absolute;
+  top: 100px;
+  left: 30px;
+  display: flex;
+  justify-content: center;
+  width: 10px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #333;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.view {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.texture_row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.texture_row > .image {
+  width: 30%;
+  cursor: pointer;
+}
+
+.texture_row > .image > img {
+  width: 50%;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.save_part {
+  margin-right: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.save_name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.save_name > p {
+  font-weight: 700;
+}
+
+.share {
+  display: flex;
+  align-items: center;
+}
+
+.share > p {
+  font-size: 15px;
+  font-weight: 700;
+}

@@ -1,0 +1,237 @@
+.login {
+    text-align: center;
+    background-color: #DBDBDB;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main_login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.left_page_cotent {
+    text-align: left;
+}
+
+.left_page_cotent > h2 {
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.left_page_cotent > p {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.return {
+    text-align: left;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.main_content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+    .main_content {
+        flex-direction: column;
+    }
+}
+
+.left_page {
+    background-color: #ffffff;
+    padding: 2% 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.right_page {
+    background-color: black;
+    color: #ffffff;
+    padding: 7% 5%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main_right {
+    width: 500px;
+}
+
+.left_page > img {
+    width: 150px;
+    height: 100px;
+}
+
+input[type=submit] {
+    background-color: black;
+    outline: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.s_title {
+    font-size: 40px;
+    font-weight: 900;
+}
+
+input {
+    outline: none;
+    border-width: 1px;
+    padding: 5px;
+    border-color: gray;
+    border-radius: 5px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.form {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+label {
+    text-align: left;
+    font-size: 25px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.sumbit {
+    height: 60px;
+    outline: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.textinput {
+    padding: 20px;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox>input {
+    height: 18px;
+    width: 18px;
+    margin-right: 5px;
+}
+
+.checkbox>p {
+    font-size: 15px;
+    color: #007bad;
+}
+
+.button-container {
+    background-color: #333;
+    margin-bottom: 10px;
+}
+
+.forgot {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.login_content {
+    margin: 8% 0;
+}
+
+.first_title {
+    margin-bottom: 20px;
+}
+
+.first_title > h1 {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.first_title > p {
+    font-size: 17px;
+}
+
+.second_title > h3 {
+    font-size: 16px;
+    margin: 0 !important;
+    font-weight: 900;
+}
+
+.first_title {
+    margin-bottom: 40px;
+}
+
+.second_title > p {
+    margin: 0 !important;
+    font-size: 13px;
+}
+
+.second_title > ul {
+    font-size: 13px;
+    list-style-position: inside;
+    margin: 0 !important;
+    padding: 0px !important;
+}
+
+.second_title > a {
+    font-size: 16px;
+    margin: 0 !important;
+    text-decoration: underline !important;
+}
+
+.second_title {
+    margin-bottom: 20px;
+}
+
+.three_title > h3 {
+    font-size: 16px;
+    margin: 0 !important;
+    font-weight: 900;
+}
+
+.three_title > p {
+    margin: 0 !important;
+    font-size: 13px;
+}
+
+.three_title > ul {
+    font-size: 13px;
+    list-style-position: inside;
+    padding: 0px !important;
+}
+
+.three_title > a {
+    font-size: 16px;
+    text-decoration: underline !important;
+    margin: 0 !important;
+}
+
+.fullname {
+    display: flex;
+    gap: 15px;
+}
