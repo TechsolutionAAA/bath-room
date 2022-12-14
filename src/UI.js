@@ -1414,6 +1414,7 @@ const UI = observer(() => {
   const [panel, Setpanel] = useState(false);
   const [modelDatas, setModelData] = useState([]);
   const [room, setRoom] = useState(false);
+  const [tile, setTile] = useState(false);
 
   function setpanel() {
     Setpanel(true);
@@ -1650,6 +1651,61 @@ const UI = observer(() => {
     }
   };
 
+  const saveData2 = async () => {
+    let errorMessage = "";
+    if (title === "") {
+      errorMessage = "Please insert title!";
+    }
+
+    if (percent !== 100) {
+      errorMessage = "Please upload image file!";
+    }
+
+    if (errorMessage !== "") {
+      toastr.options = {
+        positionClass: "toast-top-right",
+        hideDuration: 300,
+        timeOut: 2000,
+      };
+      toastr.clear();
+      setTimeout(() => toastr.error(errorMessage), 300);
+    }
+
+    const data = {
+      imageUrl: imageURL,
+      modelUrl: "NAN",
+      title: title,
+      category: "Tile",
+      subCategory: "Tile",
+    };
+    try {
+      const docRef = await addDoc(collection(db, "model_data"), {
+        data,
+      });
+      console.log("Document written with ID: ", docRef.id);
+
+      toastr.options = {
+        positionClass: "toast-top-right",
+        hideDuration: 300,
+        timeOut: 2000,
+      };
+      toastr.clear();
+      setTimeout(() => toastr.success(`Sucessfully done`), 300);
+
+      setTitle("");
+      setImageURL("");
+      setModelURL("");
+      setPercent(0);
+      setPercent1(0);
+      setFile("");
+      setFile1("");
+      setTile(false);
+      setUploadCount(uploadCount + 1);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
   function change(title) {
     setIsCategory(true);
     setHeader(title);
@@ -1725,6 +1781,10 @@ const UI = observer(() => {
         for (let i = 0; i < newData.length; i++) {
           let data = newData[i].data;
           if (data.category === "Room" && data.subCategory === "Room") {
+            data.id = newData[i].id;
+            tempDatas.push(data);
+          }
+          if (data.category === "Tile" && data.subCategory === "Tile") {
             data.id = newData[i].id;
             tempDatas.push(data);
           }
@@ -2402,10 +2462,50 @@ const UI = observer(() => {
                     </p>
                   </div>
                 </div>
+                {modelDatas.map((data) => {
+                  return (
+                    <div
+                      key={uuidv4()}
+                      className="card m-2 p-4 d-flex align-items-center text-left p-2 rounded"
+                      style={{ width: "45%" }}
+                    >
+                      <img
+                        style={{ width: "100px", height: "100px" }}
+                        src={data.imageUrl}
+                      ></img>
+                      <span className="m-2" style={{ fontSize: "12px" }}>
+                        {data.title}
+                      </span>
+                      <span className="m-2" style={{ fontSize: "12px" }}>
+                        200x200mm
+                      </span>
+                      <div className="hover1">
+                        <p
+                          onClick={(e) => {
+                            e.preventDefault();
+                            STORE.material = 2;
+                          }}
+                        >
+                          +
+                        </p>
+                      </div>
+                      {localStorage.getItem("bathroom_isOwner") === "false" ? (
+                        ""
+                      ) : (
+                        <div
+                          className="btn m-1 rounded-5 shadow-sm"
+                          onClick={() => DeleteData(data.id)}
+                        >
+                          Delete
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
                 {localStorage.getItem("bathroom_isOwner") === "false" ? (
                   ""
                 ) : (
-                  <div className="create" onClick={() => { setShow(true); setRoom(true) }}>
+                  <div className="create" onClick={() => { setShow(true); setTile(true) }}>
                     <p>Create</p>
                   </div>
                 )}
@@ -2756,13 +2856,20 @@ const UI = observer(() => {
                 <br />
                 <button onClick={handleUpload}>Upload to Firebase</button>
                 <p>{percent} % done</p>
-                <label>
-                  <small>3D model file </small>
-                </label>
-                <input type="file" onChange={handleChange1} accept="" />
-                <br />
-                <button onClick={handleUpload1}>Upload to Firebase</button>
-                <p>{percent1} % done</p>
+                {tile
+                  ? <></>
+                  : 
+                  <>
+                    <label>
+                      <small>3D model file </small>
+                    </label>
+                    <input type="file" onChange={handleChange1} accept="" />
+                    <br />
+                    <button onClick={handleUpload1}>Upload to Firebase</button>
+                    <p>{percent1} % done</p>
+                  </>
+                }
+
                 <div className="image_info">
                   <label>
                     Title:&nbsp;
@@ -2774,7 +2881,7 @@ const UI = observer(() => {
                     />
                   </label>
                   <img className="uploadimage" src={imageURL} alt="" />
-                  <button className="submit_button" onClick={room ? saveData1 : saveData}>
+                  <button className="submit_button" onClick={room ? saveData1 : (tile ? saveData2 : saveData)}>
                     Save
                   </button>
                 </div>
