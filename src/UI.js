@@ -48,7 +48,6 @@ import {
 } from "./utils/cacheData";
 import { v4 as uuidv4 } from "uuid";
 
-
 const Room_types = [1, 2, 3, 4, 5];
 const relative_ratio = 1000;
 
@@ -158,6 +157,8 @@ var light_6;
 var light_7;
 var light_8;
 
+var wallImageURL;
+
 function init() {
   // const orthoCam = new THREE.OrthographicCamera(-frustum, frustum, frustum, -frustum, 0, 30);
   // console.log("I am here!");
@@ -199,20 +200,19 @@ window.addEventListener("wheel", function (event) {
   GenerateMeasurements();
 });
 
-
 function initLight() {
   const Ambientlight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.7); // soft white light
-  Ambientlight.position.set(0, 0, 0)
+  Ambientlight.position.set(0, 0, 0);
   const Ambientlight1 = new THREE.AmbientLight("white", 0.01); // soft white light
 
   light_0 = new THREE.DirectionalLight(0xffffff, 1);
-  light_0.position.set(-3, STORE.Height / 10 * 1, -3);
+  light_0.position.set(-3, (STORE.Height / 10) * 1, -3);
   light_1 = new THREE.DirectionalLight(0xffffff, 1);
-  light_1.position.set(0, STORE.Height / 10 * 1, 0);
+  light_1.position.set(0, (STORE.Height / 10) * 1, 0);
   light_2 = new THREE.PointLight(0xffffff, 0.1, 100);
-  light_2.position.set(0, STORE.Height / 10 * 9, 0);
+  light_2.position.set(0, (STORE.Height / 10) * 9, 0);
   light_3 = new THREE.PointLight(0xffffff, 0.5, 100);
-  light_3.position.set(0, STORE.Height / 10 * 9, 0);
+  light_3.position.set(0, (STORE.Height / 10) * 9, 0);
   light_4 = new THREE.PointLight(0xffffff, 0.5, 100);
   light_4.position.set(-5, STORE.Height / 100, 5);
   light_5 = new THREE.PointLight(0xffffff, 0.5, 100);
@@ -222,10 +222,8 @@ function initLight() {
   light_7 = new THREE.PointLight(0xffffff, 0.5, 100);
   light_7.position.set(5, STORE.Height / 100, 5);
 
-
   var test = new THREE.AmbientLight(0xbbbbbb);
   // test.position.set(0,STORE.Height / 10*9,0);
-
 
   scene.add(
     // test,
@@ -236,7 +234,7 @@ function initLight() {
     light_4,
     light_5,
     light_6,
-    light_7,
+    light_7
     // Ambientlight
   );
 }
@@ -270,14 +268,17 @@ function DragObject(vec3, object, selectedwall) {
   const cz = STORE.clength / 1000;
   const yy = STORE.height / 1000;
   // // console.log('init:',selectedwall.userData.dir);
-  let minX = -xx, maxX = xx;
-  let minZ = -zz, maxZ = zz;
+  let minX = -xx,
+    maxX = xx;
+  let minZ = -zz,
+    maxZ = zz;
 
   let ow = object.geometry.parameters.width / 2;
   let oz = object.geometry.parameters.depth / 2;
   let oy = object.geometry.parameters.height;
 
-  let xlength = oz, zlength = ow;
+  let xlength = oz,
+    zlength = ow;
   if (Math.abs(object.rotation.y) - Math.PI / 2.0) {
     xlength = ow;
     zlength = oz;
@@ -286,21 +287,20 @@ function DragObject(vec3, object, selectedwall) {
   if (object.userData.type === "door") oz = 0;
   switch (STORE.type) {
     case 2:
-      maxZ = (vec3.x > (xx - cx)) ? zz - cz : zz;
-      maxX = (vec3.z > (zz - cz)) ? xx - cx : xx;
+      maxZ = vec3.x > xx - cx ? zz - cz : zz;
+      maxX = vec3.z > zz - cz ? xx - cx : xx;
       break;
     case 3:
-      maxZ = (vec3.x < (-xx + cx)) ? zz - cz : zz;
-      minX = (vec3.z > (zz - cz)) ? -xx + cx : -xx;
+      maxZ = vec3.x < -xx + cx ? zz - cz : zz;
+      minX = vec3.z > zz - cz ? -xx + cx : -xx;
       break;
     case 4:
-      minZ = (vec3.x > (xx - cx)) ? -zz + cz : -zz;
-      maxX = (vec3.z < (-zz + cz)) ? xx - cx : xx;
+      minZ = vec3.x > xx - cx ? -zz + cz : -zz;
+      maxX = vec3.z < -zz + cz ? xx - cx : xx;
       break;
     case 5:
-      minZ = (vec3.x < (-xx + cx)) ? -zz + cz : -zz;
-      minX = (vec3.z < (-zz + cz)) ? -xx + cx : -xx;
-
+      minZ = vec3.x < -xx + cx ? -zz + cz : -zz;
+      minX = vec3.z < -zz + cz ? -xx + cx : -xx;
   }
   switch (selectedwall.userData.normalAxis) {
     case AXIS.X:
@@ -321,7 +321,7 @@ function DragObject(vec3, object, selectedwall) {
       [object.position.z, margin] = adjustCorner(vec3.z, minZ, maxZ, ow);
       if (vec3.y + oy > yy) object.position.y = yy - oy;
       else object.position.y = vec3.y;
-      console.log('x\n');
+      console.log("x\n");
       break;
     case AXIS.Z:
       object.userData.normalAxis = AXIS.Z;
@@ -339,15 +339,14 @@ function DragObject(vec3, object, selectedwall) {
       [object.position.z, margin] = adjustCorner(vec3.z, minZ, maxZ, oz);
       if (vec3.y + oy > yy) object.position.y = yy - oy;
       else object.position.y = vec3.y;
-      console.log('z\n');
+      console.log("z\n");
       break;
     case AXIS.Y:
-      console.log(Math.abs(object.rotation.y), - Math.PI / 2.0);
+      console.log(Math.abs(object.rotation.y), -Math.PI / 2.0);
       if (Math.abs(object.rotation.y) - Math.PI / 2.0) {
         [object.position.x, margin] = adjustCorner(vec3.x, minX, maxX, xlength);
         [object.position.z, margin] = adjustCorner(vec3.z, minZ, maxZ, zlength);
-      }
-      else {
+      } else {
         [object.position.x, margin] = adjustCorner(vec3.x, minX, maxX, xlength);
         [object.position.z, margin] = adjustCorner(vec3.z, minZ, maxZ, zlength);
       }
@@ -355,7 +354,6 @@ function DragObject(vec3, object, selectedwall) {
     default:
       break;
   }
-
 
   // [object.position.x, margin] = adjustCorner_(vec3.x, maxX, xlength);
   // [object.position.z, margin] = adjustCorner_(vec3.z, maxZ, zlength);
@@ -614,7 +612,7 @@ function Update() {
   }, 5);
 }
 
-function createWalls(type, material) {
+function createWalls(type, material, imageURl) {
   // console.log("material: ", material);
   for (let index = 0; index < walls_group.length; index++) {
     scene.remove(walls_group[index]);
@@ -631,6 +629,7 @@ function createWalls(type, material) {
           DIR.START,
           null,
           material,
+          imageURl
         )
       );
       walls_group.push(
@@ -642,6 +641,7 @@ function createWalls(type, material) {
           DIR.END,
           null,
           material,
+          imageURl
         )
       );
       walls_group.push(
@@ -653,6 +653,7 @@ function createWalls(type, material) {
           DIR.START,
           null,
           material,
+          imageURl
         )
       );
       walls_group.push(
@@ -664,6 +665,7 @@ function createWalls(type, material) {
           DIR.END,
           null,
           material,
+          imageURl
         )
       );
       break;
@@ -676,7 +678,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -687,7 +690,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -698,7 +702,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -709,7 +714,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -724,7 +730,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -739,7 +746,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       break;
@@ -752,7 +760,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.START,
           true,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -763,7 +772,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.END,
           false,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -774,7 +784,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.START,
           false,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -785,7 +796,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.END,
           true,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -800,7 +812,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -815,7 +828,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       break;
@@ -828,7 +842,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -839,7 +854,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -850,7 +866,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -861,7 +878,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -876,7 +894,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -891,7 +910,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       break;
@@ -904,7 +924,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -915,7 +936,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -926,7 +948,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -937,7 +960,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.END,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -952,7 +976,8 @@ function createWalls(type, material) {
           AXIS.Z,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       walls_group.push(
@@ -967,7 +992,8 @@ function createWalls(type, material) {
           AXIS.X,
           DIR.START,
           null,
-          material
+          material,
+          imageURl
         )
       );
       break;
@@ -982,7 +1008,8 @@ function createWalls(type, material) {
       STORE.type,
       STORE.view,
       null,
-      material
+      material,
+      imageURl
     )
   );
   walls_group.push(
@@ -993,14 +1020,14 @@ function createWalls(type, material) {
       STORE.type,
       STORE.view,
       null,
-      material
+      material,
+      imageURl
     )
   );
   if (STORE.view == 0 && side_view_type >= 1) {
     // console.log('SideView',side_view_type);
     scene.add(walls_group[side_view_type - 1]);
-  }
-  else
+  } else
     for (let index = 0; index < walls_group.length; index++) {
       scene.add(walls_group[index]);
     }
@@ -1009,9 +1036,9 @@ function createWalls(type, material) {
 function GenerateBathroom() {
   console.log("generateRoom\n");
 
-
   // console.log('orcamPos', orthoCam.position, orthoCam.left, orthoCam.right, orthoCam.top, orthoCam.bottom);
-  createWalls(STORE.type, STORE.material);
+  console.log(STORE.material);
+  createWalls(STORE.type, STORE.material, wallImageURL);
 }
 
 function GenerateMeasurements() {
@@ -1435,8 +1462,8 @@ const UI = observer(() => {
 
   function AssignVal(e) {
     STORE[e.target.id] = e.target.value;
-    STORE['changeElement'] = e.target.id;
-    console.log(STORE['changeElement']);
+    STORE["changeElement"] = e.target.id;
+    console.log(STORE["changeElement"]);
     // console.log("zoomRoomSize", e.target.value, e.target.id);
     // switch (e.target.id) {
     //   case "length":
@@ -1590,9 +1617,14 @@ const UI = observer(() => {
 
   const DeleteData = async (id) => {
     const docRef = doc(db, "model_data", id);
-    deleteDoc(docRef).then(() => { console.log("Entire Document has been deleted successfully.") }).catch(error => { console.log(error); })
+    deleteDoc(docRef)
+      .then(() => {
+        console.log("Entire Document has been deleted successfully.");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     fetchData();
-
   };
 
   const saveData1 = async () => {
@@ -1720,8 +1752,7 @@ const UI = observer(() => {
     let positionData;
     let positionVector;
     if (flag === 0) {
-      if (currentPosition === -1)
-        return;
+      if (currentPosition === -1) return;
       positionData = getPositionData(currentPosition);
       positionVector = positionData.from;
       localStorage.setItem("current_position", currentPosition - 1);
@@ -1741,7 +1772,6 @@ const UI = observer(() => {
   }
 
   function SideViewCamera(type, wall) {
-
     console.log("camera");
 
     canvas.setAttribute("id", "sideviewcanva");
@@ -1750,12 +1780,12 @@ const UI = observer(() => {
     STORE.view = 0;
     switch (type) {
       case 0:
-        orthoCam.position.z = (STORE.Length);
+        orthoCam.position.z = STORE.Length;
         orthoCam.position.y = 0;
         orthoCam.position.x = 0;
         break;
       case 1:
-        orthoCam.position.z = (-STORE.Length);
+        orthoCam.position.z = -STORE.Length;
         orthoCam.position.y = 0;
         orthoCam.position.x = 0;
         break;
@@ -1765,7 +1795,7 @@ const UI = observer(() => {
         orthoCam.position.z = 0;
         break;
       case 3:
-        orthoCam.position.x = -(STORE.Width);
+        orthoCam.position.x = -STORE.Width;
         orthoCam.position.y = 0;
         orthoCam.position.z = 0;
         break;
@@ -1799,46 +1829,45 @@ const UI = observer(() => {
     });
   };
 
-
   const sidePanel = [
-    (< div id="view1" className="view" >
+    <div id="view1" className="view">
       <div className="top" onClick={() => SideViewCamera(0, 3)}></div>
       <div className="right" onClick={() => SideViewCamera(3, 2)}></div>
       <div className="bottom" onClick={() => SideViewCamera(1, 4)}></div>
       <div className="left" onClick={() => SideViewCamera(2, 1)}></div>
-    </div >),
-    (<div id="view2" className="view">
+    </div>,
+    <div id="view2" className="view">
       <div className="top" onClick={() => SideViewCamera(0, 3)}></div>
       <div className="cright" onClick={() => SideViewCamera(3, 2)}></div>
       <div className="cright1" onClick={() => SideViewCamera(3, 6)}></div>
       <div className="cbottom" onClick={() => SideViewCamera(1, 4)}></div>
       <div className="cbottom1" onClick={() => SideViewCamera(1, 5)}></div>
       <div className="left" onClick={() => SideViewCamera(2, 1)}></div>
-    </div>),
-    (<div id="view3" className="view">
+    </div>,
+    <div id="view3" className="view">
       <div className="top" onClick={() => SideViewCamera(0, 3)}></div>
       <div className="right" onClick={() => SideViewCamera(3, 2)}></div>
       <div className="cleft" onClick={() => SideViewCamera(2, 1)}></div>
       <div className="cleft1" onClick={() => SideViewCamera(2, 6)}></div>
       <div className="cbottom2" onClick={() => SideViewCamera(1, 4)}></div>
       <div className="cbottom3" onClick={() => SideViewCamera(1, 5)}></div>
-    </div>),
-    (<div id="view4" className="view">
+    </div>,
+    <div id="view4" className="view">
       <div className="ctop" onClick={() => SideViewCamera(0, 3)}></div>
       <div className="ctop1" onClick={() => SideViewCamera(0, 5)}></div>
       <div className="cright2" onClick={() => SideViewCamera(3, 6)}></div>
       <div className="cright3" onClick={() => SideViewCamera(3, 2)}></div>
       <div className="bottom" onClick={() => SideViewCamera(1, 4)}></div>
       <div className="left" onClick={() => SideViewCamera(2, 1)}></div>
-    </div>),
-    (<div id="view5" className="view">
+    </div>,
+    <div id="view5" className="view">
       <div className="ctop2" onClick={() => SideViewCamera(0, 3)}></div>
       <div className="ctop3" onClick={() => SideViewCamera(0, 5)}></div>
       <div className="cleft2" onClick={() => SideViewCamera(2, 6)}></div>
       <div className="cleft3" onClick={() => SideViewCamera(2, 1)}></div>
       <div className="bottom" onClick={() => SideViewCamera(1, 4)}></div>
       <div className="right" onClick={() => SideViewCamera(3, 2)}></div>
-    </div>)
+    </div>,
   ];
 
   useEffect(() => {
@@ -1909,7 +1938,6 @@ const UI = observer(() => {
                         STORE.clength
                       );
                       STORE.type = type;
-
                     }}
                     key={type}
                     className="px-4 py-3 bg-white rounded-1 m-2 hover shadow"
@@ -2137,9 +2165,7 @@ const UI = observer(() => {
                       className="card m-2 d-flex align-items-center text-center p-2 rounded"
                       style={{ width: "45%" }}
                     >
-                      <span className="m-2">
-                        {data.title}
-                      </span>
+                      <span className="m-2">{data.title}</span>
                       <img
                         style={{ width: "80px", height: "80px" }}
                         src={data.imageUrl}
@@ -2166,7 +2192,13 @@ const UI = observer(() => {
                 {localStorage.getItem("bathroom_isOwner") === "false" ? (
                   ""
                 ) : (
-                  <div className="create" onClick={() => { setShow(true); setRoom(true) }}>
+                  <div
+                    className="create"
+                    onClick={() => {
+                      setShow(true);
+                      setRoom(true);
+                    }}
+                  >
                     <p>Create</p>
                   </div>
                 )}
@@ -2175,10 +2207,7 @@ const UI = observer(() => {
           </div>
         </div>
 
-        <div
-          className="roomsSideBar texture"
-          style={{ marginLeft: -470 }}
-        >
+        <div className="roomsSideBar texture" style={{ marginLeft: -470 }}>
           <div className="d-flex r_title border-bottom">
             <h6
               className="trig-btn  py-3 w-100"
@@ -2209,14 +2238,26 @@ const UI = observer(() => {
           </div>
           <div className="d-flex flex-wrap w-100">
             <div className="texture_row">
-              <div className="image"><img src="./assets/tiles/tiled1.jpg" alt="" /></div>
-              <div className="image"><img src="./assets/tiles/tiled2.png" alt="" /></div>
-              <div className="image"><img src="./assets/tiles/tiled3.png" alt="" /></div>
+              <div className="image">
+                <img src="./assets/tiles/tiled1.jpg" alt="" />
+              </div>
+              <div className="image">
+                <img src="./assets/tiles/tiled2.png" alt="" />
+              </div>
+              <div className="image">
+                <img src="./assets/tiles/tiled3.png" alt="" />
+              </div>
             </div>
             <div className="texture_row">
-              <div className="image"><img src="./assets/tiles/tiled1.jpg" alt="" /></div>
-              <div className="image"><img src="./assets/tiles/tiled2.png" alt="" /></div>
-              <div className="image"><img src="./assets/tiles/tiled3.png" alt="" /></div>
+              <div className="image">
+                <img src="./assets/tiles/tiled1.jpg" alt="" />
+              </div>
+              <div className="image">
+                <img src="./assets/tiles/tiled2.png" alt="" />
+              </div>
+              <div className="image">
+                <img src="./assets/tiles/tiled3.png" alt="" />
+              </div>
             </div>
           </div>
         </div>
@@ -2450,7 +2491,7 @@ const UI = observer(() => {
                     src="assets/tiles/tiled3.png"
                   ></img>
                   <span className="m-2" style={{ fontSize: "12px" }}>
-                    Revival Penny Blu Title
+                    Revival Penny Blu Title3
                   </span>
                   <span className="m-2" style={{ fontSize: "12px" }}>
                     200x200mm
@@ -2466,7 +2507,7 @@ const UI = observer(() => {
                     </p>
                   </div>
                 </div>
-                {modelDatas.map((data) => {
+                {modelDatas.map((data, index) => {
                   return (
                     <div
                       key={uuidv4()}
@@ -2487,7 +2528,8 @@ const UI = observer(() => {
                         <p
                           onClick={(e) => {
                             e.preventDefault();
-                            STORE.material = 2;
+                            STORE.material = 3 + index;
+                            wallImageURL = data.imageUrl;
                           }}
                         >
                           +
@@ -2509,7 +2551,13 @@ const UI = observer(() => {
                 {localStorage.getItem("bathroom_isOwner") === "false" ? (
                   ""
                 ) : (
-                  <div className="create" onClick={() => { setShow(true); setTile(true) }}>
+                  <div
+                    className="create"
+                    onClick={() => {
+                      setShow(true);
+                      setTile(true);
+                    }}
+                  >
                     <p>Create</p>
                   </div>
                 )}
@@ -2674,7 +2722,7 @@ const UI = observer(() => {
             style={{ display: STORE.view !== 1 ? "" : "none" }}
             className="top-0 start-0 position-absolute w-100 h-100"
           ></div>
-          <div className="canvas" id={panel ? 'sideviewcanva' : ''}>
+          <div className="canvas" id={panel ? "sideviewcanva" : ""}>
             <div
               id="canvas-container"
               className="border col-12"
@@ -2785,13 +2833,23 @@ const UI = observer(() => {
 
           {STORE.view === 0 ? (
             <>
-              <div className="righttopSideBar" style={{ left: window.innerWidth - 500 }} >
-                <button className="control-btn" onClick={setpanel1}>Floor View</button>
-                <button className="control-btn accordian" onClick={setpanel}>Side View</button>
+              <div
+                className="righttopSideBar"
+                style={{ left: window.innerWidth - 500 }}
+              >
+                <button className="control-btn" onClick={setpanel1}>
+                  Floor View
+                </button>
+                <button className="control-btn accordian" onClick={setpanel}>
+                  Side View
+                </button>
               </div>
               {panel ? (
                 <>
-                  <div className="panel" style={{ left: window.innerWidth - 480 }}>
+                  <div
+                    className="panel"
+                    style={{ left: window.innerWidth - 480 }}
+                  >
                     <div className="panel-ground">
                       {sidePanel[STORE.type - 1]}
                     </div>
@@ -2801,9 +2859,9 @@ const UI = observer(() => {
                 <></>
               )}
             </>
-          ) : (<></>)}
-
-
+          ) : (
+            <></>
+          )}
 
           {saveDialogShow && (
             <div className="modal h-[50%] block">
@@ -2860,9 +2918,9 @@ const UI = observer(() => {
                 <br />
                 <button onClick={handleUpload}>Upload to Firebase</button>
                 <p>{percent} % done</p>
-                {tile
-                  ? <></>
-                  : 
+                {tile ? (
+                  <></>
+                ) : (
                   <>
                     <label>
                       <small>3D model file </small>
@@ -2872,7 +2930,7 @@ const UI = observer(() => {
                     <button onClick={handleUpload1}>Upload to Firebase</button>
                     <p>{percent1} % done</p>
                   </>
-                }
+                )}
 
                 <div className="image_info">
                   <label>
@@ -2885,7 +2943,10 @@ const UI = observer(() => {
                     />
                   </label>
                   <img className="uploadimage" src={imageURL} alt="" />
-                  <button className="submit_button" onClick={room ? saveData1 : (tile ? saveData2 : saveData)}>
+                  <button
+                    className="submit_button"
+                    onClick={room ? saveData1 : tile ? saveData2 : saveData}
+                  >
                     Save
                   </button>
                 </div>

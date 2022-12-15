@@ -5,7 +5,16 @@ import { AXIS, DIR, WALL_MAP, STORE, TILE_SIZE } from "../Constant";
 const textLoader = new THREE.TextureLoader();
 const wallMat = new THREE.MeshStandardMaterial({ color: "white" });
 class CustomWall extends THREE.Mesh {
-  constructor(initlength, initheight, pos, norVec, dir, cut, material) {
+  constructor(
+    initlength,
+    initheight,
+    pos,
+    norVec,
+    dir,
+    cut,
+    material,
+    imageURl
+  ) {
     super(new THREE.BoxGeometry(0.1, initheight, initlength), wallMat);
     this.position.set(pos.x, pos.y, pos.z);
     this.userData.normalAxis = norVec;
@@ -14,6 +23,7 @@ class CustomWall extends THREE.Mesh {
     this.userData.initlength = initlength;
     this.userData.cut = cut;
     this.userData.material = material;
+    this.imageURl = imageURl;
     switch (norVec) {
       case AXIS.X:
         if (dir === DIR.START) {
@@ -38,17 +48,24 @@ class CustomWall extends THREE.Mesh {
         break;
     }
     this.loadTextures();
-
   }
 
   loadTextures() {
-    this.material.map = textLoader.load("assets/tiles/" + WALL_MAP[this.userData.material].diffuse);
-    this.material.roughnessMap = textLoader.load(
-      "assets/tiles/" + WALL_MAP[this.userData.material].specular
-    );
-    this.material.normalMap = textLoader.load(
-      "assets/tiles/" + WALL_MAP[this.userData.material].normal
-    );
+    if (this.userData.material < 3) {
+      this.material.map = textLoader.load(
+        "assets/tiles/" + WALL_MAP[this.userData.material].diffuse
+      );
+      this.material.roughnessMap = textLoader.load(
+        "assets/tiles/" + WALL_MAP[this.userData.material].specular
+      );
+      this.material.normalMap = textLoader.load(
+        "assets/tiles/" + WALL_MAP[this.userData.material].normal
+      );
+    } else {
+      this.material.map = textLoader.load(this.imageURl);
+      this.material.roughnessMap = textLoader.load(this.imageURl);
+      this.material.normalMap = textLoader.load(this.imageURl);
+    }
     this.material.roughnessMap.repeat.x =
       (this.userData.initlength * this.scale.z) / TILE_SIZE;
     this.material.roughnessMap.repeat.y =
