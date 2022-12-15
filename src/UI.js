@@ -26,6 +26,10 @@ import { DragControls } from "./three/DragControls";
 
 import { Wall } from "./components/Wall";
 import { CustomWall } from "./components/CustomWall";
+import { CustomWall1 } from "./components/CustomWall1";
+import { CustomWall2 } from "./components/CustomWall2";
+import { CustomWall3 } from "./components/CustomWall3";
+import { CustomWall4 } from "./components/CustomWall4";
 import { BottomWall } from "./components/Bottom";
 import { AXIS, DELTA_DIS, DIR, STORE, wallItems } from "./Constant";
 import { AxesHelper, Vector3 } from "three";
@@ -619,7 +623,7 @@ function createWalls(type, material) {
   switch (type) {
     case 1:
       walls_group.push(
-        new CustomWall(
+        new Wall(
           STORE.Length,
           STORE.Height,
           new Vector3(-STORE.Width / 2, 0, 0),
@@ -630,7 +634,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new CustomWall(
+        new Wall(
           STORE.Length,
           STORE.Height,
           new Vector3(STORE.Width / 2, 0, 0),
@@ -641,7 +645,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall(
           STORE.Width,
           STORE.Height,
           new Vector3(0, 0, -STORE.Length / 2),
@@ -652,7 +656,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall(
           STORE.Width,
           STORE.Height,
           new Vector3(0, 0, STORE.Length / 2),
@@ -676,7 +680,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall(
           STORE.Length - STORE.CutOutLength,
           STORE.Height,
           new Vector3(STORE.Width / 2, 0, -STORE.CutOutLength / 2),
@@ -687,7 +691,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall1(
           STORE.Width,
           STORE.Height,
           new Vector3(0, 0, -STORE.Length / 2),
@@ -698,7 +702,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall2(
           STORE.Width - STORE.CutOutWidth,
           STORE.Height,
           new Vector3(-STORE.CutOutWidth / 2, 0, STORE.Length / 2),
@@ -709,7 +713,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall3(
           STORE.CutOutWidth,
           STORE.Height,
           new Vector3(
@@ -724,7 +728,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall4(
           STORE.CutOutLength,
           STORE.Height,
           new Vector3(
@@ -752,7 +756,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall(
           STORE.Length,
           STORE.Height,
           new Vector3(STORE.Width / 2, 0, 0),
@@ -763,7 +767,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall1(
           STORE.Width,
           STORE.Height,
           new Vector3(0, 0, -STORE.Length / 2),
@@ -774,7 +778,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall2(
           STORE.Width - STORE.CutOutWidth,
           STORE.Height,
           new Vector3(STORE.CutOutWidth / 2, 0, STORE.Length / 2),
@@ -785,7 +789,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall3(
           STORE.CutOutWidth,
           STORE.Height,
           new Vector3(
@@ -800,7 +804,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall4(
           STORE.CutOutLength,
           STORE.Height,
           new Vector3(
@@ -828,7 +832,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall(
           STORE.Length - STORE.CutOutLength,
           STORE.Height,
           new Vector3(STORE.Width / 2, 0, STORE.CutOutLength / 2),
@@ -839,7 +843,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall1(
           STORE.Width - STORE.CutOutWidth,
           STORE.Height,
           new Vector3(-STORE.CutOutWidth / 2, 0, -STORE.Length / 2),
@@ -850,7 +854,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall2(
           STORE.Width,
           STORE.Height,
           new Vector3(0, 0, STORE.Length / 2),
@@ -861,7 +865,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall3(
           STORE.CutOutWidth,
           STORE.Height,
           new Vector3(
@@ -876,7 +880,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall4(
           STORE.CutOutLength,
           STORE.Height,
           new Vector3(
@@ -904,7 +908,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall(
           STORE.Length,
           STORE.Height,
           new Vector3(STORE.Width / 2, 0, 0),
@@ -915,7 +919,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall1(
           STORE.Width - STORE.CutOutWidth,
           STORE.Height,
           new Vector3(STORE.CutOutWidth / 2, 0, -STORE.Length / 2),
@@ -926,7 +930,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall2(
           STORE.Width,
           STORE.Height,
           new Vector3(0, 0, STORE.Length / 2),
@@ -937,7 +941,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall3(
           STORE.CutOutWidth,
           STORE.Height,
           new Vector3(
@@ -952,7 +956,7 @@ function createWalls(type, material) {
         )
       );
       walls_group.push(
-        new Wall(
+        new CustomWall4(
           STORE.CutOutLength,
           STORE.Height,
           new Vector3(
