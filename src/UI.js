@@ -1444,6 +1444,7 @@ const UI = observer(() => {
 
   const [panel, Setpanel] = useState(false);
   const [modelDatas, setModelData] = useState([]);
+  const [modelDatas1, setModelData1] = useState([]);
   const [room, setRoom] = useState(false);
   const [tile, setTile] = useState(false);
 
@@ -1625,6 +1626,7 @@ const UI = observer(() => {
         console.log(error);
       });
     fetchData();
+    fetchData1();
   };
 
   const saveData1 = async () => {
@@ -1818,12 +1820,30 @@ const UI = observer(() => {
             data.id = newData[i].id;
             tempDatas.push(data);
           }
+        }
+        setModelData(tempDatas);
+        console.log(tempDatas);
+      }
+    });
+  };
+
+  const fetchData1 = async () => {
+    let tempDatas = [];
+    await getDocs(collection(db, "model_data")).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      if (newData !== undefined && newData !== null) {
+        for (let i = 0; i < newData.length; i++) {
+          let data = newData[i].data;
           if (data.category === "Tile" && data.subCategory === "Tile") {
             data.id = newData[i].id;
             tempDatas.push(data);
           }
         }
-        setModelData(tempDatas);
+        setModelData1(tempDatas);
         console.log(tempDatas);
       }
     });
@@ -1872,6 +1892,7 @@ const UI = observer(() => {
 
   useEffect(() => {
     fetchData();
+    fetchData1();
   }, [uploadCount]);
 
   return (
@@ -2507,7 +2528,7 @@ const UI = observer(() => {
                     </p>
                   </div>
                 </div>
-                {modelDatas.map((data, index) => {
+                {modelDatas1.map((data, index) => {
                   return (
                     <div
                       key={uuidv4()}
@@ -2908,7 +2929,7 @@ const UI = observer(() => {
           >
             <div className="create_window">
               <div className="main_window1">
-                <span className="close1" onClick={() => setShow(false)}>
+                <span className="close1" onClick={() => { setShow(false); setTile(false); setRoom(false)}}>
                   &times;
                 </span>
                 <label>
