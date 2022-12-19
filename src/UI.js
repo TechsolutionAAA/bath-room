@@ -50,7 +50,6 @@ import { v4 as uuidv4 } from "uuid";
 import TabItem from "./components/TabItem";
 import TabContent from "./components/TabContent";
 import "./App.css";
-import WallType from "./components/WallType";
 
 const Room_types = [1, 2, 3, 4, 5];
 const relative_ratio = 1000;
@@ -642,7 +641,7 @@ function update_material(type, wallindex, material, imageURl){
         )
       );} else if(wallindex ==2 ){
       walls_group[wallindex-1]=(
-        new Wall(
+        new CustomWall(
           STORE.Length,
           STORE.Height,
           new Vector3(STORE.Width / 2, 0, 0),
@@ -654,7 +653,7 @@ function update_material(type, wallindex, material, imageURl){
         )
       );} else if(wallindex ==3 ){
       walls_group[wallindex-1]=(
-        new CustomWall(
+        new CustomWall1(
           STORE.Width,
           STORE.Height,
           new Vector3(0, 0, -STORE.Length / 2),
@@ -666,7 +665,7 @@ function update_material(type, wallindex, material, imageURl){
         )
       );}else{
       walls_group[wallindex-1]=(
-        new CustomWall(
+        new CustomWall2(
           STORE.Width,
           STORE.Height,
           new Vector3(0, 0, STORE.Length / 2),
@@ -1045,9 +1044,39 @@ function update_material(type, wallindex, material, imageURl){
   //     scene.add(walls_group[index]);
   //   }
 
-  objects.push(walls_group[wallindex-1]);
-  console.log(objects)
   scene.add(walls_group[wallindex-1]);
+}
+
+function update_bottomwall(material, imageURl){
+  scene.remove(walls_group[walls_group.length-2]);
+  walls_group[walls_group.length-2]=(
+      new BottomWall(
+        new Vector3(0, 0, 0),
+        AXIS.Y,
+        DIR.START,
+        STORE.type,
+        STORE.view,
+        null,
+        material,
+        imageURl
+      )
+    );
+    scene.add(walls_group[walls_group.length-2]);
+}
+
+function update_roofwall(material, imageURl){
+  walls_group[walls_group.length-1]=(
+      new BottomWall(
+        new Vector3(0, STORE.height, 0),
+        AXIS.Y,
+        DIR.START,
+        STORE.type,
+        STORE.view,
+        null,
+        material,
+        imageURl
+      )
+    );
 }
 
 function createWalls(type, material, imageURl) {
@@ -2111,9 +2140,9 @@ const UI = observer(() => {
             <div id="type1">
                   <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the walls of the bathroom">
                     <line class="text-reece-blue-full line3" x1="0" y1="0" x2="100" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 0</title></line>
-                    <line class="text-reece-blue-full line1" x1="100" y1="0" x2="100" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 1</title></line>
-                    <line class="text-reece-blue-full line5" x1="100" y1="66.66666666666666" x2="0" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 2</title></line>
-                    <line class="text-reece-blue-full line4" x1="0" y1="66.66666666666666" x2="0" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 3</title></line>
+                    <line class="text-reece-blue-full line2" x1="100" y1="0" x2="100" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 1</title></line>
+                    <line class="text-reece-blue-full line4" x1="100" y1="66.66666666666666" x2="0" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 2</title></line>
+                    <line class="text-reece-blue-full line1" x1="0" y1="66.66666666666666" x2="0" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 3</title></line>
                     <circle cx="50" cy="0" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line1" fill="currentColor" role="button"><title>Select wall: 0</title></circle>
                     <circle cx="100" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line2" fill="currentColor" role="button"><title>Select wall: 1</title></circle>
                     <circle cx="50" cy="66.66666666666666" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line3" fill="currentColor" role="button"><title>Select wall: 2</title></circle>
@@ -2222,11 +2251,14 @@ function Floortype(types){
             $("#type1").css({display: "none"});
             break;    
    }
+   $(".floortype").on('click', function(){
+      update_bottomwall(cur_material, wallImageURL);
+   })
 return(
   <div>
     <div id="type1">
        <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the floor of the bathroom">
-        <path d="M0 0 L100 0 L100 66.66666666666666 L0 66.66666666666666 L0 0 Z" fill="currentColor" class="text-reece-blue-100"></path>
+        <path d="M0 0 L100 0 L100 66.66666666666666 L0 66.66666666666666 L0 0 Z" fill="currentColor" class="text-reece-blue-100 floortype"></path>
         <circle cx="50" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full" fill="currentColor"></circle>
        </svg>
     </div>
