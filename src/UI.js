@@ -47,6 +47,10 @@ import {
   getPositionData,
 } from "./utils/cacheData";
 import { v4 as uuidv4 } from "uuid";
+import TabItem from "./components/TabItem";
+import TabContent from "./components/TabContent";
+import "./App.css";
+import WallType from "./components/WallType";
 
 const Room_types = [1, 2, 3, 4, 5];
 const relative_ratio = 1000;
@@ -66,6 +70,9 @@ let temp_shower = null;
 let model;
 let temp_model;
 let side_view_type;
+let cur_material=0;
+let wallindex=1;
+// let types = STORE.type;
 
 let obtainedObjectColor = null;
 
@@ -607,9 +614,440 @@ function Update() {
   if (updateTimeout) clearTimeout(updateTimeout);
 
   updateTimeout = setTimeout(() => {
-    GenerateBathroom();
+    // GenerateBathroom();
     GenerateMeasurements();
+    update_material(STORE.type, wallindex, cur_material, wallImageURL);
   }, 5);
+}
+
+
+function update_material(type, wallindex, material, imageURl){
+  // for (let index = 0; index < walls_group.length; index++) {
+    scene.remove(walls_group[wallindex-1]);
+    // console.log(objects)
+  // }
+  switch (type) {
+    case 1:
+      if(wallindex ==1){
+      walls_group[wallindex-1]=(
+        new Wall(
+          STORE.Length,
+          STORE.Height,
+          new Vector3(-STORE.Width / 2, 0, 0),
+          AXIS.X,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex ==2 ){
+      walls_group[wallindex-1]=(
+        new Wall(
+          STORE.Length,
+          STORE.Height,
+          new Vector3(STORE.Width / 2, 0, 0),
+          AXIS.X,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex ==3 ){
+      walls_group[wallindex-1]=(
+        new CustomWall(
+          STORE.Width,
+          STORE.Height,
+          new Vector3(0, 0, -STORE.Length / 2),
+          AXIS.Z,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );}else{
+      walls_group[wallindex-1]=(
+        new CustomWall(
+          STORE.Width,
+          STORE.Height,
+          new Vector3(0, 0, STORE.Length / 2),
+          AXIS.Z,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );}
+      break;
+    case 2:
+      if(wallindex == 1){
+      walls_group[wallindex-1]=(
+        new Wall(
+          STORE.Length,
+          STORE.Height,
+          new Vector3(-STORE.Width / 2, 0, 0),
+          AXIS.X,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex == 2){
+      walls_group[wallindex-1]=(
+        new CustomWall(
+          STORE.Length - STORE.CutOutLength,
+          STORE.Height,
+          new Vector3(STORE.Width / 2, 0, -STORE.CutOutLength / 2),
+          AXIS.X,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex==3){
+      walls_group[wallindex-1]=(
+        new CustomWall1(
+          STORE.Width,
+          STORE.Height,
+          new Vector3(0, 0, -STORE.Length / 2),
+          AXIS.Z,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex ==4){
+      walls_group[wallindex-1]=(
+        new CustomWall2(
+          STORE.Width - STORE.CutOutWidth,
+          STORE.Height,
+          new Vector3(-STORE.CutOutWidth / 2, 0, STORE.Length / 2),
+          AXIS.Z,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex == 5){
+      walls_group[wallindex-1]=(
+        new CustomWall3(
+          STORE.CutOutWidth,
+          STORE.Height,
+          new Vector3(
+            STORE.Width / 2 - STORE.CutOutWidth / 2,
+            0,
+            STORE.Length / 2 - STORE.CutOutLength
+          ),
+          AXIS.Z,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else{
+      walls_group[wallindex-1]=(
+        new CustomWall4(
+          STORE.CutOutLength,
+          STORE.Height,
+          new Vector3(
+            STORE.Width / 2 - STORE.CutOutWidth,
+            0,
+            STORE.Length / 2 - STORE.CutOutLength / 2
+          ),
+          AXIS.X,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );}
+      break;
+    case 3:
+      if(wallindex ==1 ){
+      walls_group[wallindex-1]=(
+        new Wall(
+          STORE.Length - STORE.CutOutLength,
+          STORE.Height,
+          new Vector3(-STORE.Width / 2, 0, -STORE.CutOutLength / 2),
+          AXIS.X,
+          DIR.START,
+          true,
+          material,
+          imageURl
+        )
+      );} else if(wallindex == 2){
+      walls_group[wallindex-1]=(
+        new CustomWall(
+          STORE.Length,
+          STORE.Height,
+          new Vector3(STORE.Width / 2, 0, 0),
+          AXIS.X,
+          DIR.END,
+          false,
+          material,
+          imageURl
+        )
+      );} else if( wallindex ==3 ){
+      walls_group[wallindex-1]=(
+        new CustomWall1(
+          STORE.Width,
+          STORE.Height,
+          new Vector3(0, 0, -STORE.Length / 2),
+          AXIS.Z,
+          DIR.START,
+          false,
+          material,
+          imageURl
+        )
+      );} else if( wallindex == 4){
+      walls_group[wallindex-1]=(
+        new CustomWall2(
+          STORE.Width - STORE.CutOutWidth,
+          STORE.Height,
+          new Vector3(STORE.CutOutWidth / 2, 0, STORE.Length / 2),
+          AXIS.Z,
+          DIR.END,
+          true,
+          material,
+          imageURl
+        )
+      );} else if(wallindex == 5){
+      walls_group[wallindex-1]=(
+        new CustomWall3(
+          STORE.CutOutWidth,
+          STORE.Height,
+          new Vector3(
+            -STORE.Width / 2 + STORE.CutOutWidth / 2,
+            0,
+            STORE.Length / 2 - STORE.CutOutLength
+          ),
+          AXIS.Z,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else{
+      walls_group[wallindex-1]=(
+        new CustomWall4(
+          STORE.CutOutLength,
+          STORE.Height,
+          new Vector3(
+            -STORE.Width / 2 + STORE.CutOutWidth,
+            0,
+            STORE.Length / 2 - STORE.CutOutLength / 2
+          ),
+          AXIS.X,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );}
+      break;
+    case 4:
+      if(wallindex == 1){
+      walls_group[wallindex-1]=(
+        new Wall(
+          STORE.Length,
+          STORE.Height,
+          new Vector3(-STORE.Width / 2, 0, 0),
+          AXIS.X,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex == 2){
+      walls_group[wallindex-1]=(
+        new CustomWall(
+          STORE.Length - STORE.CutOutLength,
+          STORE.Height,
+          new Vector3(STORE.Width / 2, 0, STORE.CutOutLength / 2),
+          AXIS.X,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex ==3){
+      walls_group[wallindex-1]=(
+        new CustomWall1(
+          STORE.Width - STORE.CutOutWidth,
+          STORE.Height,
+          new Vector3(-STORE.CutOutWidth / 2, 0, -STORE.Length / 2),
+          AXIS.Z,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex ==4 ){
+      walls_group[wallindex-1]=(
+        new CustomWall2(
+          STORE.Width,
+          STORE.Height,
+          new Vector3(0, 0, STORE.Length / 2),
+          AXIS.Z,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else if( wallindex ==5){
+      walls_group[wallindex-1]=(
+        new CustomWall3(
+          STORE.CutOutWidth,
+          STORE.Height,
+          new Vector3(
+            STORE.Width / 2 - STORE.CutOutWidth / 2,
+            0,
+            -STORE.Length / 2 + STORE.CutOutLength
+          ),
+          AXIS.Z,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else {
+      walls_group[wallindex-1]=(
+        new CustomWall4(
+          STORE.CutOutLength,
+          STORE.Height,
+          new Vector3(
+            STORE.Width / 2 - STORE.CutOutWidth,
+            0,
+            -STORE.Length / 2 + STORE.CutOutLength / 2
+          ),
+          AXIS.X,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );}
+      break;
+    case 5:
+      if(wallindex ==1){
+      walls_group[wallindex-1]=(
+        new Wall(
+          STORE.Length - STORE.CutOutLength,
+          STORE.Height,
+          new Vector3(-STORE.Width / 2, 0, STORE.CutOutLength / 2),
+          AXIS.X,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex ==2){
+      walls_group[wallindex-1]=(
+        new CustomWall(
+          STORE.Length,
+          STORE.Height,
+          new Vector3(STORE.Width / 2, 0, 0),
+          AXIS.X,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex==3){
+      walls_group[wallindex-1]=(
+        new CustomWall1(
+          STORE.Width - STORE.CutOutWidth,
+          STORE.Height,
+          new Vector3(STORE.CutOutWidth / 2, 0, -STORE.Length / 2),
+          AXIS.Z,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex == 4){
+      walls_group[wallindex-1]=(
+        new CustomWall2(
+          STORE.Width,
+          STORE.Height,
+          new Vector3(0, 0, STORE.Length / 2),
+          AXIS.Z,
+          DIR.END,
+          null,
+          material,
+          imageURl
+        )
+      );} else if(wallindex ==5){
+      walls_group[wallindex-1]=(
+        new CustomWall3(
+          STORE.CutOutWidth,
+          STORE.Height,
+          new Vector3(
+            -STORE.Width / 2 + STORE.CutOutWidth / 2,
+            0,
+            -STORE.Length / 2 + STORE.CutOutLength
+          ),
+          AXIS.Z,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );} else{
+      walls_group[wallindex-1]=(
+        new CustomWall4(
+          STORE.CutOutLength,
+          STORE.Height,
+          new Vector3(
+            -STORE.Width / 2 + STORE.CutOutWidth,
+            0,
+            -STORE.Length / 2 + STORE.CutOutLength / 2
+          ),
+          AXIS.X,
+          DIR.START,
+          null,
+          material,
+          imageURl
+        )
+      );}
+      break;
+    default:
+      break;
+  }
+  // walls_group[wallindex-1]=(
+  //   new BottomWall(
+  //     new Vector3(0, 0, 0),
+  //     AXIS.Y,
+  //     DIR.START,
+  //     STORE.type,
+  //     STORE.view,
+  //     null,
+  //     material,
+  //     imageURl
+  //   )
+  // );
+  // walls_group[wallindex-1]=(
+  //   new BottomWall(
+  //     new Vector3(0, STORE.Height, 0),
+  //     AXIS.Y,
+  //     DIR.END,
+  //     STORE.type,
+  //     STORE.view,
+  //     null,
+  //     material,
+  //     imageURl
+  //   )
+  // );
+  // if (STORE.view == 0 && side_view_type >= 1) {
+  //   // console.log('SideView',side_view_type);
+  //   scene.add(walls_group[side_view_type - 1]);
+  // } else
+  //   for (let index = 0; index < walls_group.length; index++) {
+  //     scene.add(walls_group[index]);
+  //   }
+
+  objects.push(walls_group[wallindex-1]);
+  console.log(objects)
+  scene.add(walls_group[wallindex-1]);
 }
 
 function createWalls(type, material, imageURl) {
@@ -1616,6 +2054,212 @@ const UI = observer(() => {
     }
   };
 
+ function WallType(types) {
+    // eslint-disable-next-line default-case
+    switch (types) {
+        case 1: $("#type1").css({display: "block"});
+                $("#type2").css({display: "none"});
+                $("#type3").css({display: "none"});
+                $("#type4").css({display: "none"});
+                $("#type5").css({display: "none"});
+                break;
+        case 2: $("#type2").css({display: "block"});
+                $("#type1").css({display: "none"});
+                $("#type3").css({display: "none"});
+                $("#type4").css({display: "none"});
+                $("#type5").css({display: "none"});
+                break;
+        case 3: $("#type3").css({display: "block"});
+                $("#type2").css({display: "none"});
+                $("#type1").css({display: "none"});
+                $("#type4").css({display: "none"});
+                $("#type5").css({display: "none"});
+                break;
+        case 4: $("#type4").css({display: "block"});
+                $("#type2").css({display: "none"});
+                $("#type3").css({display: "none"});
+                $("#type1").css({display: "none"});
+                $("#type5").css({display: "none"});
+                break;
+        case 5: $("#type5").css({display: "block"});
+                $("#type2").css({display: "none"});
+                $("#type3").css({display: "none"});
+                $("#type4").css({display: "none"});
+                $("#type1").css({display: "none"});
+                break;    
+    }
+    $(".line1").on('click', function(){
+         wallindex = 1;
+    });
+    $(".line2").on('click', function(){
+      wallindex = 2;
+    });
+    $(".line3").on('click', function(){
+      wallindex = 3;
+    });
+    $(".line4").on('click', function(){
+      wallindex = 4;
+    });
+    $(".line5").on('click', function(){
+      wallindex = 5;
+    });
+    $(".line6").on('click', function(){
+      wallindex = 6;
+    });
+        return(
+        <div>
+            <div id="type1">
+                  <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the walls of the bathroom">
+                    <line class="text-reece-blue-full line3" x1="0" y1="0" x2="100" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 0</title></line>
+                    <line class="text-reece-blue-full line1" x1="100" y1="0" x2="100" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 1</title></line>
+                    <line class="text-reece-blue-full line5" x1="100" y1="66.66666666666666" x2="0" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 2</title></line>
+                    <line class="text-reece-blue-full line4" x1="0" y1="66.66666666666666" x2="0" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 3</title></line>
+                    <circle cx="50" cy="0" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line1" fill="currentColor" role="button"><title>Select wall: 0</title></circle>
+                    <circle cx="100" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line2" fill="currentColor" role="button"><title>Select wall: 1</title></circle>
+                    <circle cx="50" cy="66.66666666666666" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line3" fill="currentColor" role="button"><title>Select wall: 2</title></circle>
+                    <circle cx="0" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line4" fill="currentColor" role="button"><title>Select wall: 3</title></circle></svg>
+            </div>
+            <div id="type2"> 
+              <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the walls of the bathroom">
+                <line class="text-reece-blue-full line3" x1="0" y1="0" x2="100" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 0</title></line>
+                <line class="text-reece-blue-full line2" x1="100" y1="0" x2="100" y2="36.666666666666664" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 1</title></line>
+                <line class="text-reece-blue-full line5" x1="100" y1="36.666666666666664" x2="70" y2="36.666666666666664" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 2</title></line>
+                <line class="text-reece-blue-full line6" x1="70" y1="36.666666666666664" x2="70" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 3</title></line>
+                <line class="text-reece-blue-full line4" x1="70" y1="66.66666666666666" x2="0" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 4</title></line>
+                <line class="text-reece-blue-full line1" x1="0" y1="66.66666666666666" x2="0" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 5</title></line>
+                <circle cx="50" cy="0" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line3" fill="currentColor" role="button"><title>Select wall: 0</title></circle>
+                <circle cx="100" cy="18.333333333333332" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line2" fill="currentColor" role="button"><title>Select wall: 1</title></circle>
+                <circle cx="85" cy="36.666666666666664" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line5" fill="currentColor" role="button"><title>Select wall: 2</title></circle>
+                <circle cx="70" cy="51.66666666666666" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line6" fill="currentColor" role="button"><title>Select wall: 3</title></circle>
+                <circle cx="35" cy="66.66666666666666" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line4" fill="currentColor" role="button"><title>Select wall: 4</title></circle>
+                <circle cx="0" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line1" fill="currentColor" role="button"><title>Select wall: 5</title></circle>
+              </svg>          
+            </div>
+            <div id="type3">
+                <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the walls of the bathroom">
+                  <line class="text-reece-blue-full line3" x1="0" y1="0" x2="100" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 0</title></line>
+                  <line class="text-reece-blue-full line2" x1="100" y1="0" x2="100" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 1</title></line>
+                  <line class="text-reece-blue-full line4" x1="100" y1="66.66666666666666" x2="30" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 2</title></line>
+                  <line class="text-reece-blue-full line6" x1="30" y1="66.66666666666666" x2="30" y2="36.666666666666664" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 3</title></line>
+                  <line class="text-reece-blue-full line5" x1="30" y1="36.666666666666664" x2="0" y2="36.666666666666664" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 4</title></line>
+                  <line class="text-reece-blue-full line1" x1="0" y1="36.666666666666664" x2="0" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 5</title></line>
+                  <circle cx="50" cy="0" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line3" fill="currentColor" role="button"><title>Select wall: 0</title></circle>
+                  <circle cx="100" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line2" fill="currentColor" role="button"><title>Select wall: 1</title></circle>
+                  <circle cx="65" cy="66.66666666666666" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line4" fill="currentColor" role="button"><title>Select wall: 2</title></circle>
+                  <circle cx="30" cy="51.66666666666666" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line6" fill="currentColor" role="button"><title>Select wall: 3</title></circle>
+                  <circle cx="15" cy="36.666666666666664" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line5" fill="currentColor" role="button"><title>Select wall: 4</title></circle>
+                  <circle cx="0" cy="18.333333333333332" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line1" fill="currentColor" role="button"><title>Select wall: 5</title></circle>
+                </svg>
+            </div>
+            <div id="type4">
+                <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the walls of the bathroom">
+                  <line class="text-reece-blue-full line3" x1="0" y1="0" x2="70" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 0</title></line>
+                  <line class="text-reece-blue-full line6" x1="70" y1="0" x2="70" y2="29.999999999999996" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 1</title></line>
+                  <line class="text-reece-blue-full line5" x1="70" y1="29.999999999999996" x2="100" y2="29.999999999999996" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 2</title></line>
+                  <line class="text-reece-blue-full line2" x1="100" y1="29.999999999999996" x2="100" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 3</title></line>
+                  <line class="text-reece-blue-full line4" x1="100" y1="66.66666666666666" x2="0" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 4</title></line>
+                  <line class="text-reece-blue-full line1" x1="0" y1="66.66666666666666" x2="0" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 5</title></line>
+                  <circle cx="35" cy="0" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line3" fill="currentColor" role="button"><title>Select wall: 0</title></circle>
+                  <circle cx="70" cy="14.999999999999998" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line6" fill="currentColor" role="button"><title>Select wall: 1</title></circle>
+                  <circle cx="85" cy="29.999999999999996" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line5" fill="currentColor" role="button"><title>Select wall: 2</title></circle>
+                  <circle cx="100" cy="48.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line2" fill="currentColor" role="button"><title>Select wall: 3</title></circle>
+                  <circle cx="50" cy="66.66666666666666" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line4" fill="currentColor" role="button"><title>Select wall: 4</title></circle>
+                  <circle cx="0" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line1" fill="currentColor" role="button"><title>Select wall: 5</title></circle>
+                </svg>
+            </div>
+            <div id="type5">
+              <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the walls of the bathroom">
+                        <line class="text-reece-blue-100 line2" x1="100" y1="0" x2="100" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 0</title></line>
+                        <line class="text-reece-blue-100 line4" x1="100" y1="66.66666666666666" x2="0" y2="66.66666666666666" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 1</title></line>
+                        <line class="text-reece-blue-100 line1" x1="0" y1="66.66666666666666" x2="0" y2="29.999999999999996" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 2</title></line>
+                        <line class="text-reece-blue-100 line5" x1="0" y1="29.999999999999996" x2="30" y2="29.999999999999996" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 3</title></line>
+                        <line class="text-reece-blue-100 line6" x1="30" y1="29.999999999999996" x2="30" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 4</title></line>
+                        <line class="text-reece-blue-full line3" x1="30" y1="0" x2="100" y2="0" stroke="currentColor" stroke-width="3.2388663967611335" stroke-linecap="square" role="button"><title>Select wall: 5</title></line>
+                        <circle cx="100" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow line2" fill="currentColor" role="button"><title>Select wall: 0</title></circle>
+                        <circle cx="50" cy="66.66666666666666" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow line4" fill="currentColor" role="button"><title>Select wall: 1</title></circle>
+                        <circle cx="0" cy="48.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow line1" fill="currentColor" role="button"><title>Select wall: 2</title></circle>
+                        <circle cx="15" cy="29.999999999999996" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow line5" fill="currentColor" role="button"><title>Select wall: 3</title></circle>
+                        <circle cx="30" cy="14.999999999999998" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow line6" fill="currentColor" role="button"><title>Select wall: 4</title></circle>
+                        <circle cx="65" cy="0" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full line3" fill="currentColor" role="button"><title>Select wall: 5</title></circle>
+              </svg>
+            </div>
+            
+        </div>
+
+    );
+}
+function Floortype(types){
+  // eslint-disable-next-line default-case
+  switch (types) {
+    case 1: $("#type1").css({display: "block"});
+            $("#type2").css({display: "none"});
+            $("#type3").css({display: "none"});
+            $("#type4").css({display: "none"});
+            $("#type5").css({display: "none"});
+            break;
+    case 2: $("#type2").css({display: "block"});
+            $("#type1").css({display: "none"});
+            $("#type3").css({display: "none"});
+            $("#type4").css({display: "none"});
+            $("#type5").css({display: "none"});
+            break;
+    case 3: $("#type3").css({display: "block"});
+            $("#type2").css({display: "none"});
+            $("#type1").css({display: "none"});
+            $("#type4").css({display: "none"});
+            $("#type5").css({display: "none"});
+            break;
+    case 4: $("#type4").css({display: "block"});
+            $("#type2").css({display: "none"});
+            $("#type3").css({display: "none"});
+            $("#type1").css({display: "none"});
+            $("#type5").css({display: "none"});
+            break;
+    case 5: $("#type5").css({display: "block"});
+            $("#type2").css({display: "none"});
+            $("#type3").css({display: "none"});
+            $("#type4").css({display: "none"});
+            $("#type1").css({display: "none"});
+            break;    
+   }
+return(
+  <div>
+    <div id="type1">
+       <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the floor of the bathroom">
+        <path d="M0 0 L100 0 L100 66.66666666666666 L0 66.66666666666666 L0 0 Z" fill="currentColor" class="text-reece-blue-100"></path>
+        <circle cx="50" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full" fill="currentColor"></circle>
+       </svg>
+    </div>
+    <div id="type2">
+      <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the floor of the bathroom">
+        <path d="M0 0 L100 0 L100 36.666666666666664 L70 36.666666666666664 L70 66.66666666666666 L0 66.66666666666666 L0 0 Z" fill="currentColor" class="text-reece-blue-100"></path>
+        <circle cx="35" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full" fill="currentColor"></circle>
+      </svg>
+    </div>
+    <div id="type3">
+      <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the floor of the bathroom">
+        <path d="M0 0 L100 0 L100 66.66666666666666 L30 66.66666666666666 L30 36.666666666666664 L0 36.666666666666664 L0 0 Z" fill="currentColor" class="text-reece-blue-100"></path>
+        <circle cx="65" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full" fill="currentColor"></circle>
+      </svg>
+    </div>
+    <div id="type4">
+      <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the floor of the bathroom">
+        <path d="M0 0 L70 0 L70 29.999999999999996 L100 29.999999999999996 L100 66.66666666666666 L0 66.66666666666666 L0 0 Z" fill="currentColor" class="text-reece-blue-100"></path>
+        <circle cx="35" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full" fill="currentColor"></circle>
+        </svg>
+    </div>
+    <div id="type5">
+      <svg class="mx-auto overflow-visible text-charcoal-200 max-h-80" viewBox="0 0 100 66.66666666666666" aria-label="Diagram of the floor of the bathroom">
+        <path d="M30 0 L100 0 L100 66.66666666666666 L0 66.66666666666666 L0 29.999999999999996 L30 29.999999999999996 L30 0 Z" fill="currentColor" class="text-reece-blue-100"></path>
+        <circle cx="65" cy="33.33333333333333" r="4.080971659919028" stroke="white" stroke-width="1.5546558704453441" class="drop-shadow-lg filter-shadow text-reece-blue-full" fill="currentColor"></circle>
+      </svg>
+    </div>
+  </div>
+
+)
+
+}
+
   const DeleteData = async (id) => {
     const docRef = doc(db, "model_data", id);
     deleteDoc(docRef)
@@ -1894,6 +2538,7 @@ const UI = observer(() => {
     fetchData();
     fetchData1();
   }, [uploadCount]);
+  const [activeTab, setActiveTab] = useState("tab1");
 
   return (
     <div className="container vh-100 overflow-auto">
@@ -1940,6 +2585,7 @@ const UI = observer(() => {
               X
             </span>
           </div>
+          
           <div className="d-flex flex-wrap w-100">
             <h6
               className="trig-btn  w-100"
@@ -1959,6 +2605,8 @@ const UI = observer(() => {
                         STORE.clength
                       );
                       STORE.type = type;
+                      GenerateBathroom();
+                      GenerateMeasurements();
                     }}
                     key={type}
                     className="px-4 py-3 bg-white rounded-1 m-2 hover shadow"
@@ -2413,7 +3061,7 @@ const UI = observer(() => {
 
         <div
           className="roomsSideBar"
-          style={{ marginLeft: menuOption[3] && !isCategory ? 0 : -470 }}
+          style={{ marginLeft: menuOption[3] && !isCategory ? 0 : -470, overflowY : "scroll" }}
         >
           <div className="d-flex r_title border-bottom">
             <h6
@@ -2443,6 +3091,27 @@ const UI = observer(() => {
               X
             </span>
           </div>
+        
+          <div className="types Tabs  w-100 h-25">
+              
+              <ul className="nav">
+                <TabItem title="walls" id="tab1" activeTap={activeTab} setActiveTab={setActiveTab}></TabItem>
+                <TabItem title="floor" id="tab2" activeTap={activeTab} setActiveTab={setActiveTab}></TabItem>
+                <TabItem title="celling" id="tab3" activeTap={activeTab} setActiveTab={setActiveTab}></TabItem>
+              </ul>
+              <div className="outlet">
+                <TabContent id="tab1" activeTab={activeTab}>walls<br />                  
+                  {WallType(STORE.type)}
+                </TabContent>
+                <TabContent id="tab2" activeTab={activeTab}>floor
+                  {Floortype(STORE.type)}
+                </TabContent>
+                <TabContent id="tab3" activeTab={activeTab}>celling
+                  {Floortype(STORE.type)}
+                </TabContent>
+              </div>             
+              
+          </div>
           <div className="d-flex flex-wrap w-100">
             <h6
               className="trig-btn  w-100"
@@ -2471,7 +3140,10 @@ const UI = observer(() => {
                     <p
                       onClick={(e) => {
                         e.preventDefault();
-                        STORE.material = 0;
+                        // STORE.material = 0;
+                        cur_material = 0;
+                        
+                        update_material(STORE.type, wallindex, cur_material, wallImageURL);
                       }}
                     >
                       +
@@ -2496,7 +3168,10 @@ const UI = observer(() => {
                     <p
                       onClick={(e) => {
                         e.preventDefault();
-                        STORE.material = 1;
+                        // STORE.material = 1;
+                        cur_material = 1;
+                        
+                        update_material(STORE.type, wallindex, cur_material, wallImageURL);
                       }}
                     >
                       +
@@ -2521,7 +3196,9 @@ const UI = observer(() => {
                     <p
                       onClick={(e) => {
                         e.preventDefault();
-                        STORE.material = 2;
+                        // STORE.material = 2;
+                        cur_material = 2;
+                        update_material(STORE.type, wallindex, cur_material, wallImageURL);
                       }}
                     >
                       +
@@ -2549,8 +3226,10 @@ const UI = observer(() => {
                         <p
                           onClick={(e) => {
                             e.preventDefault();
-                            STORE.material = 3 + index;
+                            // STORE.material = 3 + index;
+                            cur_material = 3 + index;
                             wallImageURL = data.imageUrl;
+                            update_material(STORE.type, wallindex, cur_material, wallImageURL);
                           }}
                         >
                           +
