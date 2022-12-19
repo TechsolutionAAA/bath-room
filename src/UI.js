@@ -3132,13 +3132,13 @@ return(
                 <TabItem title="celling" id="tab3" activeTap={activeTab} setActiveTab={setActiveTab}></TabItem>
               </ul>
               <div className="outlet">
-                <TabContent id="tab1" activeTab={activeTab}>walls<br />                  
+                <TabContent id="tab1" activeTab={activeTab}><br />                  
                   {WallType(STORE.type)}
                 </TabContent>
-                <TabContent id="tab2" activeTab={activeTab}>floor
+                <TabContent id="tab2" activeTab={activeTab}>
                   {Floortype(STORE.type)}
                 </TabContent>
-                <TabContent id="tab3" activeTab={activeTab}>celling
+                <TabContent id="tab3" activeTab={activeTab}>
                   {Floortype(STORE.type)}
                 </TabContent>
               </div>             
