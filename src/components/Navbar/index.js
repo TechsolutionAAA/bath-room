@@ -1,3 +1,4 @@
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 import { Link, useNavigate } from "react-router-dom";
 import { clearPositionData } from "../../utils/cacheData";
 import "./index.css";
@@ -40,13 +41,15 @@ const Navbar = (props) => {
         <div className="b_login">
           <div className="save_part">
             <div className="save_name">
-              <p>My New Bathroom</p>
+              <p>{props.curRoomTitle}</p>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-width="1.2"><path d="M14 5L8 12L2 5" stroke="#434648" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              <div className="toggle_menu">
-                <div className="save"></div>
-                <div className="rename"></div>
-                <div className="delete"></div>
-              </div>
+              {!props.isDashBoard &&
+                  <div className="toggle_menu">
+                    <div className="save">Save</div>
+                    <div className="rename" onClick={() => props.Rename()}>Rename</div>
+                    <div className="delete">Delete</div>
+                  </div>
+              }
             </div>
             <div className="share">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-4 lg:mr-3 lg:w-[24px] lg:h-[24px]"><path d="M17.811 3.99695L20.9999 7.18578L17.811 10.3746" stroke="#434648" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19.1263 13.3443V18.9247C19.1263 19.3233 18.7482 19.7219 18.37 19.7219H4.75632C4.37816 19.7219 4 19.3233 4 18.9247V7.76382C4 7.2855 4.37816 6.96661 4.75632 6.96661H7.78159" stroke="#434648" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9 14C9 10.1023 12.3325 7 16.3152 7H20" stroke="#434648" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path></svg>

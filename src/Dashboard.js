@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 export default function Dashboard() {
   return (
     <div>
-      <Navbar />
+      <Navbar curRoomTitle="My New Bathroom" isDashBoard={true}/>
       <div className="mt-[60px] relative">
         <img
           src="assets/image/1.jpg"
