@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { v4 as uuid_v4 } from "uuid";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   collection,
   addDoc,
@@ -113,6 +113,9 @@ const camera = new THREE.PerspectiveCamera(
   0.01,
   50
 );
+
+let curSide = 0;
+
 function initCamera() {
   console.log("initCamera\n");
 
@@ -614,7 +617,7 @@ function Update() {
 
   updateTimeout = setTimeout(() => {
     // GenerateBathroom();
-    GenerateMeasurements();
+    GenerateMeasurements(curSide);
     update_material(STORE.type, wallindex, cur_material, wallImageURL);
   }, 5);
 }
@@ -1523,7 +1526,8 @@ function GenerateMeasurements() {
       orthoCam,
       labelRenderer.domElement,
       STORE.type,
-      temp_object
+      temp_object,
+      curSide
     );
 }
 
@@ -1903,6 +1907,11 @@ const UI = observer(() => {
   const [saveDialogShow, setSaveDialogShow] = useState(false);
   const [objectTitle, setObjectTitle] = useState("");
 
+  const [renameRoomDialogShow, setRenameDialogShow] = useState(false);
+  const [curRoomTitle, setCurRoomTitle] = useState("My New Bathroom");
+  const inputRename = useRef();
+
+
   const [header, setHeader] = useState("");
   const [category, setCategory] = useState("");
 
@@ -1914,6 +1923,7 @@ const UI = observer(() => {
   const [modelDatas1, setModelData1] = useState([]);
   const [room, setRoom] = useState(false);
   const [tile, setTile] = useState(false);
+
 
   function setpanel() {
     Setpanel(true);
@@ -2452,6 +2462,7 @@ return(
   function SideViewCamera(type, wall) {
     console.log("camera");
 
+    curSide = type;
     canvas.setAttribute("id", "sideviewcanva");
 
     side_view_type = wall;
@@ -2572,9 +2583,13 @@ return(
   }, [uploadCount]);
   const [activeTab, setActiveTab] = useState("tab1");
 
+  const handleRename = () => {
+    setRenameDialogShow(true);
+  }
+
   return (
     <div className="container vh-100 overflow-auto">
-      <Navbar init={initThree} />
+      <Navbar init={initThree} curRoomTitle={curRoomTitle} isDashBoard={false} Rename={handleRename}/>
       <Sidebar
         menuOption={menuOption}
         setMenuOption={setMenuOption}
@@ -2637,6 +2652,7 @@ return(
                         STORE.clength
                       );
                       STORE.type = type;
+                      console.error("target type:", type)
                       GenerateBathroom();
                       GenerateMeasurements();
                     }}
@@ -3626,6 +3642,48 @@ return(
                   >
                     Save
                   </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {renameRoomDialogShow && (
+            <div className="modal h-[50%] block">
+              <div className="create_window ">
+                <div className="main_window1 w-[100%] space-y-3">
+                  <span
+                    className="close1"
+                    onClick={() => setRenameDialogShow(false)}
+                  >
+                    &times;
+                  </span>
+                  <div className="d-flex">
+                    <label>
+                      <small>Name: </small>
+                    </label>
+                    <input
+                      className="w-full ml-3"
+                      type="text"
+                      name="curRoomName"
+                      placeholder={curRoomTitle}
+                      ref={inputRename}
+                      onChange={(e) => {
+                        e.preventDefault();
+                      }}
+                    />
+                  </div>
+                  <div className="d-flex justify-end">
+                    <button
+                      className="py-[10px] px-[40px] border-[1px] border-gray-600 rounded-[5px]"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurRoomTitle(inputRename.current.value)
+                        setRenameDialogShow(false);
+                      }}
+                    >
+                      Save
+                    </button>
+                  </div>
+                 
                 </div>
               </div>
             </div>

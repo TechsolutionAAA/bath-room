@@ -10,16 +10,20 @@ let lines = [];
 
 class  Dimensions{
 
-    constructor(node, group, camera, element, room_type, selectedobject){
+    constructor(node, group, camera, element, room_type, selectedobject, curSide){
 
         this.createPoints(selectedobject, room_type);
 
         element.innerHTML ="";
+
         for (var i= 0; i < lines.length; i ++) {
             var line = lines[i];   
             var startX = line.start.x;
+            // var startY = line.start.y;
             var startZ = line.start.z;
+            
             var endX = line.end.x;
+            // var endY = line.end.y;
             var endZ = line.end.z;
     
             var from = new THREE.Vector3(startX, 0, startZ);
@@ -37,13 +41,16 @@ class  Dimensions{
             label.style.position = 'absolute';
             label.style.zIndex = 5;
             var text = document.createElement('div');
-            text.innerHTML = (length *1000).toFixed(0) +"mm";
+            if(curSide  < 2)
+                text.innerHTML = i < 2 ?  (length *1000).toFixed(0) +"mm" : (STORE.Height*1000).toFixed(0) +"mm";
+            else 
+                text.innerHTML = i >= 2 ?  (STORE.Length*1000).toFixed(0) +"mm" : (STORE.Height*1000).toFixed(0) +"mm";
             text.style.backgroundColor = "white";
             text.style.borderRadius = 5 + "px";
             text.style.textAlign = "center";
             text.style.fontSize = 12 + "px";
 
-            if(startX == endX){
+            if((curSide  < 2 &&  i >= 2)|| (curSide  >= 2 &&  i < 2)){
                 var style_text = ' rotate(-1.57rad)';
                 text.style.transform = style_text;
             }
@@ -91,6 +98,7 @@ class  Dimensions{
                 this.createline(start, points, lines, AXIS.Z);
                 start = new Vector3(STORE.Width/2 + Delta_dim, 0, -STORE.Length/2);
                 this.createline(start, points, lines, AXIS.Z);
+
                 break;
             case 2 :
                 start = new Vector3(-STORE.Width/2, 0, -STORE.Length/2 - Delta_dim);
