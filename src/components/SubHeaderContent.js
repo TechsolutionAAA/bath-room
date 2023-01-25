@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 export function SubHeaderContent(props) {
   const { setShow, category, subCategory, keyRefresh } = props;
   const [modelDatas, setModelData] = useState([]);
-  console.log(category);
-  console.log(subCategory);
 
   const fetchData = async () => {
     let tempDatas = [];
@@ -27,7 +25,6 @@ export function SubHeaderContent(props) {
           }
         }
         setModelData(tempDatas);
-        console.log(tempDatas);
       }
     });
   };

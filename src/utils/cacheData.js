@@ -25,7 +25,6 @@ export const savePositionData = ( flag, object) =>
             from: prev,
             to: current
         }
-        console.log('data', data);
         positionData.push(data);
         localStorage.setItem("position_data", JSON.stringify(positionData));
         localStorage.setItem("position", position + 1);

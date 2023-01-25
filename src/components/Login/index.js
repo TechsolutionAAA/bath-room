@@ -13,7 +13,6 @@ export default function Login() {
   if (localStorage.getItem('new_plan') === "true") linkTo = "/main";
 
   if (localStorage.getItem("bathroom_login") === "true") {
-    console.log("hay");
     //navigate('/');
     window.location.href = "/main";
     //window.location.reload();
@@ -29,12 +28,11 @@ export default function Login() {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
       let data = doc.data();
       if (data.name === name.value && data.password === password.value) {
         localStorage.setItem("bathroom_login", true);
         localStorage.setItem("userId", doc.id);
-        console.log(data.isOwner);
+
         if (data.isOwner === 1) localStorage.setItem("bathroom_isOwner", true);
         else localStorage.setItem("bathroom_isOwner", false);
       }
