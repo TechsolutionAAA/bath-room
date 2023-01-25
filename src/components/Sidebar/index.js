@@ -23,7 +23,6 @@ const Sidebar = ({ menuOption, setMenuOption, setIsCategory, refresh, setRefresh
         setRefresh(refresh + 1);
         setMenuOption([...tempData])
         setIsCategory(false)
-        console.log(tempData);
     }
 
     return <div className="sidebar" style={{

@@ -114,7 +114,7 @@ const camera = new THREE.PerspectiveCamera(
   50
 );
 
-let curSide = 0;
+let curSide = -1;
 
 function initCamera() {
   console.log("initCamera\n");
@@ -206,7 +206,7 @@ window.addEventListener("wheel", function (event) {
     //STORE.Scale -= 0.1;
   }
   init();
-  GenerateMeasurements();
+  GenerateMeasurements(curSide);
 });
 
 function initLight() {
@@ -1511,9 +1511,11 @@ function GenerateBathroom() {
   createWalls(STORE.type, STORE.material, wallImageURL);
 }
 
-function GenerateMeasurements() {
+function GenerateMeasurements(side) {
   console.log("generateMeasurements\n");
   document.getElementById("measures").append(labelRenderer.domElement);
+
+  curSide = side;
 
   for (let index = 0; index < dims.length; index++) {
     scene.remove(dims[index]);
@@ -1663,10 +1665,8 @@ function loadModel(URL) {
       temp_model.userData.type = "other";
 
       temp_model.add(model);
-      console.log(temp_model);
       scene.add(temp_model);
       objects.push(temp_model);
-      console.log("created", scene);
       animate();
     }
   );
@@ -1930,6 +1930,7 @@ const UI = observer(() => {
   }
 
   function setpanel1() {
+    curSide = -1;
     STORE.view = 0;
     side_view_type = 0;
     orthoCam.position.y = STORE.Height + DELTA_DIS;
@@ -2652,9 +2653,8 @@ return(
                         STORE.clength
                       );
                       STORE.type = type;
-                      console.error("target type:", type)
                       GenerateBathroom();
-                      GenerateMeasurements();
+                      GenerateMeasurements(-1);
                     }}
                     key={type}
                     className="px-4 py-3 bg-white rounded-1 m-2 hover shadow"
