@@ -15,6 +15,7 @@ const Navbar = (props) => {
     navigate("/login");
     props.init();
   };
+
   return (
     <div className="header">
       <div className="d-flex justify-content-between p-2  h-100">
@@ -45,9 +46,9 @@ const Navbar = (props) => {
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-width="1.2"><path d="M14 5L8 12L2 5" stroke="#434648" stroke-linecap="round" stroke-linejoin="round"></path></svg>
               {!props.isDashBoard &&
                   <div className="toggle_menu">
-                    <div className="save">Save</div>
-                    <div className="rename" onClick={() => props.Rename()}>Rename</div>
-                    <div className="delete">Delete</div>
+                    <div className="save pl-[10px]" onClick={() => props.handleProductSave()}>Save</div>
+                    <div className="rename pl-[10px]" onClick={() => props.Rename()}>Rename</div>
+                    <div className="delete pl-[10px]" onClick={() => window.location.href = "/"}>Delete</div>
                   </div>
               }
             </div>

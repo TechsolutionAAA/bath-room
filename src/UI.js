@@ -1924,7 +1924,7 @@ const UI = observer(() => {
   const [room, setRoom] = useState(false);
   const [tile, setTile] = useState(false);
 
-
+  const [isShowProductSave, setShowProductSave] = useState(false);
   function setpanel() {
     Setpanel(true);
   }
@@ -2588,9 +2588,38 @@ return(
     setRenameDialogShow(true);
   }
 
+  const productSave = () => {
+    setShowProductSave(true);
+    handleMenu(4); 
+  }
+
+  const [isSideBarOpen, setSideBarOpen] = useState(false)
+
+  const trigSidebar = () => {
+    setSideBarOpen(!isSideBarOpen);
+  }
+
+  const handleMenu = (index) => {
+
+      if (index === 6) getObjectData();
+      let tempData = menuOption;
+      setSideBarOpen(false);
+      for (let i = 0; i < tempData.length; i++) {
+          if (i === index) {
+              tempData[i] = true;
+          }
+          else {
+              tempData[i] = false;
+          }
+      }
+      setRefresh(refresh + 1);
+      setMenuOption([...tempData])
+      setIsCategory(false)
+  }
+
   return (
     <div className="container vh-100 overflow-auto">
-      <Navbar init={initThree} curRoomTitle={curRoomTitle} isDashBoard={false} Rename={handleRename}/>
+      <Navbar init={initThree} curRoomTitle={curRoomTitle} isDashBoard={false} Rename={handleRename} handleProductSave={productSave}/>
       <Sidebar
         menuOption={menuOption}
         setMenuOption={setMenuOption}
@@ -2598,6 +2627,9 @@ return(
         refresh={refresh}
         setRefresh={setRefresh}
         getObjectData={getObjectData}
+        trigSidebar = {trigSidebar}
+        isSideBarOpen = {isSideBarOpen}
+        selectMenu = {handleMenu}
       />
       <div className="row content">
         <div
@@ -2655,6 +2687,7 @@ return(
                       STORE.type = type;
                       GenerateBathroom();
                       GenerateMeasurements(-1);
+                      setpanel1();
                     }}
                     key={type}
                     className="px-4 py-3 bg-white rounded-1 m-2 hover shadow"
