@@ -143,8 +143,6 @@ class  Dimensions{
                     points = this.getPoints(0, min_y, max_y, STORE.Height);
                     this.createline(start, points, lines, AXIS.Y);
 
-                    console.error("points", points);
-
                     start = new Vector3(STORE.Width / 2 + Delta_dim, 0, 0);
                     this.createline(start, points, lines, AXIS.Y);
 
