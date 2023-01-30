@@ -2590,7 +2590,7 @@ return(
 
   const productSave = () => {
     setShowProductSave(true);
-    handleMenu(4); 
+    handleMenu(6); 
   }
 
   const [isSideBarOpen, setSideBarOpen] = useState(false)

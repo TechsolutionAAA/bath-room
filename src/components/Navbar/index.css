@@ -38,7 +38,7 @@
 .toggle_menu {
     display: none;
     position: absolute;
-    top: 30px;
+    top: 20px;
     left: 10px;
     background-color: #ffffff;
     min-width: 160px;
